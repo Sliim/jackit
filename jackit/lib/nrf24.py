@@ -18,6 +18,7 @@
 
 from __future__ import print_function
 import usb
+import usb.backend.libusb1
 import logging
 import sys
 
@@ -67,7 +68,8 @@ class nrf24:
     # Constructor
     def __init__(self, index=0):
         try:
-            self.dongle = list(usb.core.find(idVendor=0x1915, idProduct=0x0102, find_all=True))[index]
+            backend = usb.backend.libusb1.get_backend(find_library=lambda x: "/usr/lib/libusb-1.0.so")
+            self.dongle = list(usb.core.find(idVendor=0x1915, idProduct=0x0102, find_all=True, backend=backend))[index]
             self.dongle.set_configuration()
         except (usb.core.NoBackendError, usb.core.USBError) as ex:
             raise ex
