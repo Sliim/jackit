@@ -132,7 +132,8 @@ def confirm_root():
 @click.option('--autopwn', is_flag=True, help="Automatically find and attack all targets")
 @click.option('--all-channels', is_flag=True, help="Send attack to all detected channels")
 @click.option('--keylogging', is_flag=True, help="Log keystrokes for XOR encrypted MS keyboards")
-def cli(debug, script, lowpower, interval, layout, address, vendor, reset, autopwn, all_channels, keylogging):
+@click.option('--index', default=0, help="Dungle index to use")
+def cli(debug, script, lowpower, interval, layout, address, vendor, reset, autopwn, all_channels, keylogging, index):
 
     banner()
     confirm_root()
@@ -172,7 +173,7 @@ def cli(debug, script, lowpower, interval, layout, address, vendor, reset, autop
 
     # Initialize the radio
     try:
-        jack = mousejack.MouseJack(lowpower, debug, reset)
+        jack = mousejack.MouseJack(lowpower, debug, reset, index)
     except Exception as e:
         if e.__str__() == "Cannot find USB dongle.":
             _print_err("Cannot find Crazy PA USB dongle.")
