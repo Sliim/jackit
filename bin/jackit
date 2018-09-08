@@ -112,14 +112,6 @@ def banner():
     print("")
 
 
-def confirm_root():
-    # make sure we are root
-    if os.getuid() != 0 and platform.system() != 'Darwin':
-        _print_err("ERROR: You need to run as root!")
-        _print_err("login as root (su root) or try sudo %s" % sys.argv[0])
-        exit(-1)
-
-
 @click.command()
 @click.option('--debug', is_flag=True, help='Enable debug')
 @click.option('--script', default="", help="Ducky file to use for injection", type=click.Path())
@@ -135,7 +127,6 @@ def confirm_root():
 def cli(debug, script, lowpower, interval, layout, address, vendor, reset, autopwn, all_channels, keylogging):
 
     banner()
-    confirm_root()
 
     if debug:
         print(O + "[W] " + W + "Debug is enabled.")

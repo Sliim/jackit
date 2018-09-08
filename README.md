@@ -62,6 +62,14 @@ If you have no idea what Duckyscript is, see the [Hak5 USB Rubber Ducky Wiki](ht
 
 For practical usage instructions and gotchas, check on [the Wiki page](https://github.com/phikshun/jackit/wiki).
 
+### Running as non root
+To use jackit without root privileges, you can add an `udev` rule for the CrazyRadio PA dongle.
+Example: `/etc/udev/rules.d/41-mousejack.rules`
+```
+SUBSYSTEM=="usb", ATTRS{idVendor}=="1915", ATTRS{idProduct}=="0102", GROUP="plugdev", MODE="0660"
+```
+Assuming your user is in `plugdev` group, this rule will allow you to use the device. Restart the `udev` service to apply the rule.
+
 ## Who
 
 This implementation was written by phikshun and infamy. Our code is all BSD license. All the files in the lib directory were written by Bastille's research team and are GPLv3 license.
