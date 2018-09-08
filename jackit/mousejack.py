@@ -9,14 +9,14 @@ from jackit.plugins import logitech, microsoft, microsoft_enc, amazon
 class MouseJack(object):
     ''' Class for scanning, pinging and fingerprint devices '''
 
-    def __init__(self, disable_lna=False, debug=False, reset=False):
+    def __init__(self, disable_lna=False, debug=False, reset=False, index=0):
         self.channels = range(2, 84)
         self.channel_index = 0
         self.debug = debug
         self.devices = {}
         self.ping = [0x0f, 0x0f, 0x0f, 0x0f]
         self.plugins = [microsoft, microsoft_enc, logitech, amazon]
-        self.init_radio(disable_lna, reset)
+        self.init_radio(disable_lna, reset, index)
 
     def _debug(self, text):
         if self.debug:
@@ -28,11 +28,11 @@ class MouseJack(object):
     def to_display(self, data):
         return ':'.join('{:02X}'.format(x) for x in data)
 
-    def init_radio(self, disable_lna, reset):
+    def init_radio(self, disable_lna, reset, index):
         if reset:
             self._debug("Resetting USB dongle")
-            nrf24_reset.reset_radio(0)
-        self.radio = nrf24.nrf24(0)
+            nrf24_reset.reset_radio(index)
+        self.radio = nrf24.nrf24(index)
         if not disable_lna:
             self._debug("Enabled LNA")
             self.radio.enable_lna()
